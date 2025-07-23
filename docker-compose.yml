@@ -1,0 +1,80 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: ${PROJECT_NAME}_db
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_PORT}
+    restart: always
+
+  web: &web
+    container_name: ${PROJECT_NAME}_backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ./entrypoint.dev.sh
+    volumes:
+      - ./:/app
+      - ./static:/home/app/web/static
+      - ./media:/home/app/web/media
+      - ./locale:/home/app/web/locale
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Tashkent
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    restart: always
+    security_opt:
+      - seccomp:unconfined
+
+  daphne:
+    <<: *web
+    container_name: ${PROJECT_NAME}_ws
+    command: python -m daphne -b 0.0.0.0 -p 8893 core.asgi:application
+    ports:
+      - "8893:8893"
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    container_name: ${PROJECT_NAME}_redis
+    image: redis:7.2.4-alpine
+    restart: always
+
+  celery:
+    <<: *web
+    container_name: ${PROJECT_NAME}_celery
+    command: celery -A core worker --beat --scheduler django --loglevel=info
+    ports: []  # disables port publishing
+    restart: always
+
+  flower:
+    <<: *web
+    container_name: ${PROJECT_NAME}_flower
+    command: celery -A core.celery flower --broker="${CELERY_BROKER_URL}" --url_prefix=/flower
+    ports:
+      - "${FLOWER_PORT}:5557"
+    depends_on:
+      - redis
+      - celery
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
