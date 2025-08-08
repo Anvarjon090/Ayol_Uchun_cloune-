@@ -1,0 +1,9 @@
+from django.db.models import TextChoices
+
+
+class ReasonDeleteChoices(TextChoices):
+    I_CHANGED_MY_MIND = "I_CHANGED_MY_MIND"
+    INFORMATION_WAS_ENTERED_INCORRECTLY = "INFORMATION_WAS_ENTERED_INCORRECTLY"
+    I_WAS_FORCED = "I_WAS_FORCED"
+    I_PREFER_NOT_TO_SAY = "I_PREFER_NOT_TO_SAY"
+    OTHER = "OTHER"
