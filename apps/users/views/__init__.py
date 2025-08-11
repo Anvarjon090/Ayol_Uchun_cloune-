@@ -1,7 +1,15 @@
-from .frontend_translations import FrontendTranslationView
-from .version_history import VersionHistoryView
+# from .frontend_translations import FrontendTranslationView
+# from .version_history import VersionHistoryView
 
-__all__ = [
-    "FrontendTranslationView",
-    "VersionHistoryView",
-]
+# __all__ = [
+#     "FrontendTranslationView",
+#     "VersionHistoryView",
+# ]
+
+from rest_framework import viewsets
+from .views import (
+    UserViewSet,
+    InterestViewSet,
+    UserCourseViewSet,
+    UserWebinarViewSet,
+)

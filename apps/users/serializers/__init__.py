@@ -1,7 +1,15 @@
-from .frontend_translation import FrontendTranslationSerializer
-from .version_history import VersionHistorySerializer
+# from .frontend_translation import FrontendTranslationSerializer
+# from .version_history import VersionHistorySerializer
 
-__all__ = [
-    "FrontendTranslationSerializer",
-    "VersionHistorySerializer",
-]
+# __all__ = [
+#     "FrontendTranslationSerializer",
+#     "VersionHistorySerializer",
+# ]
+from rest_framework import serializers
+from .serializers import (
+    UserSerializer,
+    InterestSerializer,
+    UserCourseSerializer,
+    UserWebinarSerializer,
+    UserRegisterSerializer
+)
