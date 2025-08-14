@@ -50,6 +50,8 @@ class PaylovAPIView(APIView):
         if not is_authenticated:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
+        print(">>> Request data: ", request.data)
+
         serializer = PaylovSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -73,9 +75,11 @@ class PaylovAPIView(APIView):
         """
         error, code = PaylovClient(self.params).check_transaction()
 
-        if error and code == STATUS_CODES["ORDER_NOT_FOUND"]:
-            return dict(result=dict(status=code, statusText=STATUS_TEXT["ERROR"]))
-        print(">>> Check transaction is successful")
+        if error:
+            if code == STATUS_CODES["ORDER_NOT_FOUND"]:
+                return dict(result=dict(status=code, statusText=STATUS_TEXT["ERROR"]))
+            elif code == STATUS_CODES["INVALID_AMOUNT"]:
+                return dict(result=dict(status=code, statusText=STATUS_TEXT["ERROR"]))
         return dict(result=dict(status=code, statusText=STATUS_TEXT["SUCCESS"]))
 
     def perform_transaction(self) -> dict[str, Any]:

@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Avg
 
+
 from apps.courses.models import Course, Webinar, Category, Module, Lesson, Comment
 from apps.courses.serializers import (
     CourseSerializer,

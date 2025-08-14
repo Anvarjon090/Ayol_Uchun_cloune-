@@ -7,6 +7,38 @@ from apps.common.models import BaseModel
 from apps.payments.choices import OrderStatus, ProviderChoices, TransactionStatus
 
 
+class UserCard(BaseModel):
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="user_cards",
+        verbose_name=_("User"),
+    )
+    card_token = models.CharField(max_length=255, verbose_name=_("Card Token"))
+    provider = models.ForeignKey(
+        "payments.Providers", on_delete=models.CASCADE, verbose_name=_("Provider")
+    )
+    cardholder_name = models.CharField(
+        max_length=255, verbose_name=_("Cardholder Name"), null=True, blank=True
+    )
+    last_four_digits = models.CharField(
+        max_length=4, verbose_name=_("Last Four Digits"), null=True, blank=True
+    )
+    brand = models.CharField(
+        max_length=255, verbose_name=_("Brand"), null=True, blank=True
+    )
+    expire_month = models.CharField(max_length=2, verbose_name=_("Expire Month"))
+    expire_year = models.CharField(max_length=4, verbose_name=_("Expire Year"))
+    is_confirmed = models.BooleanField(default=False, verbose_name=_("Is confirmed"))
+
+    class Meta:
+        verbose_name = _("User Card")
+        verbose_name_plural = _("User Cards")
+
+    def __str__(self):
+        return f"User Card: {self.id}"
+
+
 class Order(BaseModel):
     user = models.ForeignKey(
         "users.User",
@@ -75,6 +107,13 @@ class Transaction(BaseModel):
     amount = models.DecimalField(
         max_digits=12, decimal_places=2, verbose_name=_("Amount")
     )
+    card = models.ForeignKey(
+        "payments.UserCard",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Card"),
+    )
     extra = models.JSONField(null=True, blank=True, verbose_name=_("Extra Data"))
 
     def __str__(self):
@@ -98,26 +137,30 @@ class Transaction(BaseModel):
         self,
         provider=None,
         transaction_id: str | None = None,
+        card: UserCard | None = None
     ):
         if not self.remote_id and transaction_id:
             self.remote_id = str(transaction_id)
         self.provider = provider
-        self.is_paid = True
+        self.paid_at = datetime.datetime.now()
         self.status = TransactionStatus.COMPLETED
+        if card:
+            self.card = card
 
         try:
             with transaction.atomic():
                 self.save(
                     update_fields=[
-                        "is_paid",
+                        "paid_at",
                         "status",
                         "remote_id",
                         "provider",
+                        "card",
                     ]
                 )
                 self.order.status = OrderStatus.COMPLETED
-                self.order.is_paid = self.is_paid
-                self.order.save(update_fields=["is_paid"])
+                self.order.is_paid = True if self.paid_at else False
+                self.order.save(update_fields=["is_paid", "status"])
         except Exception:
             raise
 
