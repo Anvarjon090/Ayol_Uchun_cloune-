@@ -33,6 +33,9 @@ dev = [
     "pytest-django>=4.11.1",
     "ruff>=0.12.0",
 ]
+prod = [
+    "gunicorn>=23.0.0",
+]
 
 
 # RUFF configs
