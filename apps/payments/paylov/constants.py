@@ -19,6 +19,7 @@ API_ENDPOINTS = {
     "CREATE_CARD": ("userCard/createUserCard/", "POST"),
     "CONFIRM_CARD": ("userCard/confirmUserCardCreate/", "POST"),
     "GET_CARDS": ("userCard/getAllUserCards/", "GET"),
+    "GET_SINGLE_CARD": ("userCard/getCard/", "GET"),
     "DELETE_CARD": ("userCard/deleteUserCard/", "DELETE"),
     "CREATE_RECEIPT": ("receipts/create/", "POST"),
     "PAY_RECEIPT": ("receipts/pay/", "POST"),

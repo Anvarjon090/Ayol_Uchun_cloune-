@@ -3,20 +3,20 @@
 
 from .serializers import (
     CategorySerializer,
-    CourseSerializer,
-    WebinarSerializer,
-    ModuleSerializer,
-    LessonSerializer,
     CommentSerializer,
+    CourseSerializer,
+    LessonSerializer,
+    ModuleSerializer,
+    WebinarSerializer,
 )
 
 __all__ = [
-    "FrontendTranslationSerializer",
-    "VersionHistorySerializer",
-    "CourseSerializer",
-    "WebinarSerializer",
     "CategorySerializer",
-    "ModuleSerializer",
+    "CommentSerializer",
+    "CourseSerializer",
+    "FrontendTranslationSerializer",
     "LessonSerializer",
-    "CommentSerializer"
+    "ModuleSerializer",
+    "VersionHistorySerializer",
+    "WebinarSerializer",
 ]

@@ -7,11 +7,12 @@
 # ]
 
 from rest_framework import viewsets
+
 from .views import (
-    PostViewSet,
     EventViewSet,
-    SurveyViewSet,
-    QuestionViewSet,
+    PostViewSet,
     QuestionOptionViewSet,
+    QuestionViewSet,
     SubmissionViewSet,
+    SurveyViewSet,
 )
