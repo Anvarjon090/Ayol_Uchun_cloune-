@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from django.db.models import Avg, Count
 
-from apps.courses.models import Course, Webinar, Category, Module, Lesson, Comment
+from apps.courses.models import Category, Comment, Course, Lesson, Module, Webinar
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -13,7 +12,16 @@ class CategorySerializer(serializers.ModelSerializer):
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ["id", "module", "title", "description", "file", "duration", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "module",
+            "title",
+            "description",
+            "file",
+            "duration",
+            "created_at",
+            "updated_at",
+        ]
 
 
 class ModuleSerializer(serializers.ModelSerializer):
@@ -30,7 +38,9 @@ class CourseSerializer(serializers.ModelSerializer):
     category_id = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), source="category", write_only=True
     )
-    author = serializers.PrimaryKeyRelatedField(read_only=True)  # set in view from request.user
+    author = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )  # set in view from request.user
     average_rating = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -98,8 +108,12 @@ class CommentSerializer(serializers.ModelSerializer):
         course = data.get("course") or getattr(self.instance, "course", None)
         webinar = data.get("webinar") or getattr(self.instance, "webinar", None)
         if not course and not webinar:
-            raise serializers.ValidationError("Comment must be related to either a course or a webinar.")
+            raise serializers.ValidationError(
+                "Comment must be related to either a course or a webinar."
+            )
         # prevent both being provided (optional — if you want exclusivity)
         if course and webinar:
-            raise serializers.ValidationError("Comment can be related to only one of course or webinar.")
+            raise serializers.ValidationError(
+                "Comment can be related to only one of course or webinar."
+            )
         return data

@@ -6,5 +6,4 @@ app_name = "paylov"
 
 urlpatterns = [
     path("callback/", PaylovAPIView.as_view(), name="paylov-callback"),
-    path("generate-link/", PaylovAPIView.as_view(), name="paylov-callback"),
 ]

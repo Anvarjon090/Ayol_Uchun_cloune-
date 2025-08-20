@@ -1,7 +1,7 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
 from apps.users.models import Interest, UserCourse, UserWebinar
-from apps.courses.models import Course, Webinar
 
 User = get_user_model()
 
@@ -18,9 +18,17 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "id", "phone_number", "username", "email",
-            "first_name", "last_name", "avatar", "bio",
-            "is_active", "is_confirmed", "interests"
+            "id",
+            "phone_number",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "avatar",
+            "bio",
+            "is_active",
+            "is_confirmed",
+            "interests",
         ]
 
 

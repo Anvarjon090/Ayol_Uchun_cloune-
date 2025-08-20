@@ -1,11 +1,12 @@
 from rest_framework.routers import DefaultRouter
+
 from .views import (
     CategoryViewSet,
-    CourseViewSet,
-    WebinarViewSet,
-    ModuleViewSet,
-    LessonViewSet,
     CommentViewSet,
+    CourseViewSet,
+    LessonViewSet,
+    ModuleViewSet,
+    WebinarViewSet,
 )
 
 app_name = "courses"

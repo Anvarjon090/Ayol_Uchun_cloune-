@@ -1,11 +1,11 @@
-from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework.views import APIView
 
-from apps.payments.paylov.client import PaylovClient
 from apps.common.payments.serializers import AddUserCardSerializer
+from apps.payments.paylov.client import PaylovClient
 
 
 class AddUserCardAPIView(APIView):
@@ -14,7 +14,7 @@ class AddUserCardAPIView(APIView):
 
     @swagger_auto_schema(
         request_body=AddUserCardSerializer,
-        responses={200: "Success", 400: "Validation Error"}
+        responses={200: "Success", 400: "Validation Error"},
     )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -24,10 +24,7 @@ class AddUserCardAPIView(APIView):
             user=request.user,
             card_number=serializer.validated_data["card_number"],
             expire_month=serializer.validated_data["exp_month"],
-            expire_year=serializer.validated_data["exp_year"]
+            expire_year=serializer.validated_data["exp_year"],
         )
 
-        return Response(
-            data=response,
-            status=status.HTTP_200_OK
-        )
+        return Response(data=response, status=status.HTTP_200_OK)

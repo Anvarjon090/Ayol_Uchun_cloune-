@@ -7,9 +7,10 @@
 # ]
 
 from rest_framework import viewsets
+
 from .views import (
-    UserViewSet,
     InterestViewSet,
     UserCourseViewSet,
+    UserViewSet,
     UserWebinarViewSet,
 )

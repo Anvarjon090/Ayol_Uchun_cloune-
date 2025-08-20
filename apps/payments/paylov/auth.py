@@ -18,7 +18,10 @@ def authentication(request) -> bool:
         bool: True if the request is authenticated, False otherwise.
     """
 
+    print("Request: ", request.META)
     auth = get_authorization_header(request).split()
+
+    print("Auth Header: ", auth)
 
     if not auth or auth[0].lower() != b"basic":
         return False
@@ -34,6 +37,7 @@ def authentication(request) -> bool:
         return False
 
     username, password = auth_parts[0], auth_parts[2]
+    print("Username password: ", username, password)
     credentials = get_credentials()
 
     paylov_username = credentials["PAYLOV_USERNAME"]
