@@ -338,6 +338,7 @@ dependencies = [
     { name = "celery" },
     { name = "daphne" },
     { name = "django" },
+    { name = "django-environ" },
     { name = "django-filter" },
     { name = "django-jazzmin" },
     { name = "django-recaptcha" },
@@ -366,6 +367,7 @@ requires-dist = [
     { name = "celery", specifier = ">=5.5.3" },
     { name = "daphne", specifier = ">=4.2.1" },
     { name = "django", specifier = ">=5.2.3" },
+    { name = "django-environ", specifier = ">=0.12.0" },
     { name = "django-filter", specifier = ">=25.1" },
     { name = "django-jazzmin", specifier = ">=3.0.1" },
     { name = "django-recaptcha", specifier = ">=4.1.0" },
@@ -387,6 +389,15 @@ dev = [
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-django", specifier = ">=4.11.1" },
     { name = "ruff", specifier = ">=0.12.0" },
+]
+
+[[package]]
+name = "django-environ"
+version = "0.12.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/04/65d2521842c42f4716225f20d8443a50804920606aec018188bbee30a6b0/django_environ-0.12.0.tar.gz", hash = "sha256:227dc891453dd5bde769c3449cf4a74b6f2ee8f7ab2361c93a07068f4179041a", size = 56804, upload-time = "2025-01-13T17:03:37.74Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/b3/0a3bec4ecbfee960f39b1842c2f91e4754251e0a6ed443db9fe3f666ba8f/django_environ-0.12.0-py2.py3-none-any.whl", hash = "sha256:92fb346a158abda07ffe6eb23135ce92843af06ecf8753f43adf9d2366dcc0ca", size = 19957, upload-time = "2025-01-13T17:03:32.918Z" },
 ]
 
 [[package]]
