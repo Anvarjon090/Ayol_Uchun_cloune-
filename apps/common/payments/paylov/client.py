@@ -1,23 +1,20 @@
 import base64
 import urllib
-import httpx
-import requests
 
+import requests
 from rest_framework.exceptions import NotFound
 
-from apps.users.models import User
 from apps.payments.choices import TransactionStatus
-from apps.payments.models import Transaction, UserCard, Providers
-from apps.payments.paylov.credentials import get_credentials
-from apps.payments.paylov.errors import error_codes
-from apps.payments.choices import ProviderChoices
+from apps.payments.models import Providers, Transaction, UserCard
 from apps.payments.paylov.constants import (
     API_ENDPOINTS,
     CHECKOUT_BASE_URL,
     STATUS_CODES,
     SUBSCRIPTION_BASE_URL,
-    HTTPMethods,
 )
+from apps.payments.paylov.credentials import get_credentials
+from apps.payments.paylov.errors import error_codes
+from apps.users.models import User
 
 
 class PaylovClient:
@@ -63,11 +60,13 @@ class PaylovClient:
         method_map = {
             "POST": requests.post,
             "GET": requests.get,
-            "DELETE": requests.delete
+            "DELETE": requests.delete,
         }
 
         try:
-            response = method_map[method](url, json=payload, headers=headers, params=params)
+            response = method_map[method](
+                url, json=payload, headers=headers, params=params
+            )
 
             response.raise_for_status()
             response_data = response.json()
@@ -114,18 +113,20 @@ class PaylovClient:
         encode_params = base64.b64encode(query.encode("utf-8"))
         encode_params = str(encode_params, "utf-8")
         return f"{CHECKOUT_BASE_URL}{encode_params}"
-    
+
     """
         Subscribe API code
     """
 
-    def create_user_card(self, user, card_number: str, expire_month: str, expire_year: str) -> tuple[bool, dict]:
+    def create_user_card(
+        self, user, card_number: str, expire_month: str, expire_year: str
+    ) -> tuple[bool, dict]:
         expire_date_str = expire_year + expire_month  # MM/YY -> YYMM | 06/29 2906
 
         payload = {
             "userId": str(user.id),
             "cardNumber": str(card_number),
-            "expireDate": str(expire_date_str)
+            "expireDate": str(expire_date_str),
         }
 
         # user_card = UserCard.objects.filter(user=user, card_number=card_number).first()
@@ -142,7 +143,9 @@ class PaylovClient:
             card_id = response_data["result"]["cid"]
 
             paylov_provider = Providers.objects.filter(key="paylov").last()
-            is_already_exists = UserCard.objects.filter(user=user, card_token=card_id).exists()
+            is_already_exists = UserCard.objects.filter(
+                user=user, card_token=card_id
+            ).exists()
 
             if is_already_exists:
                 return self.get_error_response("card_exists")
@@ -153,7 +156,7 @@ class PaylovClient:
                 provider=paylov_provider,
                 expire_month=expire_month,
                 expire_year=expire_year,
-                is_confirmed=False
+                is_confirmed=False,
             )
 
             return True, {"otp_sent_phone": otp_sent_phone, "card_id": user_card.id}
@@ -161,7 +164,9 @@ class PaylovClient:
         error_code = response_data.get("error", {"code": "unknown_error"})["code"]
         return self.get_error_response(error_code)
 
-    def confirm_user_card(self, user: User, card_id: int, otp: str, card_name: str | None) -> tuple[bool, dict]:
+    def confirm_user_card(
+        self, user: User, card_id: int, otp: str, card_name: str | None
+    ) -> tuple[bool, dict]:
         try:
             print(user, card_id, otp, card_name)
             card = UserCard.objects.get(user=user, id=card_id)
@@ -174,14 +179,17 @@ class PaylovClient:
         payload = {
             "cardId": card.card_token,
             "otp": otp,
-            "card_name": card_name or "User"
+            "card_name": card_name or "User",
         }
 
         success, response_data = self.send_request("CONFIRM_CARD", payload=payload)
 
-        if success or response_data.get("error", {}).get("code") == "card_is_already_activated":
+        if (
+            success
+            or response_data.get("error", {}).get("code") == "card_is_already_activated"
+        ):
             card_data = response_data.get("result", {}).get("card", {})
-            
+
             if card_data:
                 card.is_confirmed = True
                 card.cardholder_name = card_data.get("owner", "")
@@ -189,13 +197,11 @@ class PaylovClient:
                 card.save(update_fields=["is_confirmed"])
                 return True, {"card_token": card.card_token, "is_confirmed": True}
 
-        error_code = response_data.get(
-            "error", {"code": "unknown_error"}
-        ).get(
-            "details", {"code": "unknown_error"}
-        ).get(
-            "error", {"code": "unknown_error"}
-        )["code"]
+        error_code = (
+            response_data.get("error", {"code": "unknown_error"})
+            .get("details", {"code": "unknown_error"})
+            .get("error", {"code": "unknown_error"})["code"]
+        )
         print(">>>", error_code)
         return self.get_error_response(error_code)
 
@@ -220,10 +226,7 @@ class PaylovClient:
 
         if success:
             card.soft_delete()
-            response_data = {
-                "detail": "User card is deleted successfully",
-                "code": 204
-            }
+            response_data = {"detail": "User card is deleted successfully", "code": 204}
             return success, response_data
 
         error_code = response_data.get("error", {"code": "unknown_error"})["code"]
@@ -356,14 +359,13 @@ class PaylovClient:
 
         error_response = {"detail": error_details[1], "code": error_details[0]}
         return False, error_response
-    
+
     @staticmethod
     def get_error_response(error_code: str) -> tuple[bool, dict]:
-        error_details = error_codes.get(str(error_code).upper(), ["unknown_error", "Unknown error"])
-        error_response = {
-            "detail": error_details[1],
-            "code": error_details[0]
-        }
+        error_details = error_codes.get(
+            str(error_code).upper(), ["unknown_error", "Unknown error"]
+        )
+        error_response = {"detail": error_details[1], "code": error_details[0]}
         return False, error_response
 
     def check_transaction(self) -> tuple[bool, str]:

@@ -6,10 +6,11 @@
 #     "VersionHistorySerializer",
 # ]
 from rest_framework import serializers
+
 from .serializers import (
-    UserSerializer,
     InterestSerializer,
     UserCourseSerializer,
+    UserRegisterSerializer,
+    UserSerializer,
     UserWebinarSerializer,
-    UserRegisterSerializer
 )

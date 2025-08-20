@@ -1,13 +1,13 @@
-from rest_framework.routers import DefaultRouter
 from django.urls import path
-from apps.users.views.views import RegisterView
+from rest_framework.routers import DefaultRouter
+
 from apps.users.views import (
-    UserViewSet, 
     InterestViewSet,
-    UserCourseViewSet, 
+    UserCourseViewSet,
+    UserViewSet,
     UserWebinarViewSet,
 )
-
+from apps.users.views.views import RegisterView
 
 app_name = "users"
 

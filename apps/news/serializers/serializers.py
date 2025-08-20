@@ -1,12 +1,6 @@
 from rest_framework import serializers
-from apps.news.models import (
-    Post,
-    Event,
-    Survey,
-    Question,
-    QuestionOption,
-    Submission
-)
+
+from apps.news.models import Event, Post, Question, QuestionOption, Submission, Survey
 
 
 class PostSerializer(serializers.ModelSerializer):

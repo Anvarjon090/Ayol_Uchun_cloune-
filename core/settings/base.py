@@ -1,5 +1,5 @@
-from datetime import timedelta
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,7 +22,14 @@ DJANGO_APPS = [
 
 LOCAL_APPS = ["apps.common", "apps.users", "apps.news", "apps.courses", "apps.payments"]
 
-EXTERNAL_APPS = ["daphne", "jazzmin", "rest_framework", "drf_yasg", "rest_framework_simplejwt", "django_filters"]
+EXTERNAL_APPS = [
+    "daphne",
+    "jazzmin",
+    "rest_framework",
+    "drf_yasg",
+    "rest_framework_simplejwt",
+    "django_filters",
+]
 
 INSTALLED_APPS = LOCAL_APPS + EXTERNAL_APPS + DJANGO_APPS
 
@@ -157,27 +164,23 @@ from core.jazzmin_conf import JAZZMIN_SETTINGS  # noqa
 # REST_FRAMEWORK settings
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_THROTTLE_CLASSES': [],
-    'DEFAULT_THROTTLE_RATES': {},
-    'UNAUTHENTICATED_USER': None,
-    'UNAUTHENTICATED_TOKEN': None,
+    "DEFAULT_THROTTLE_CLASSES": [],
+    "DEFAULT_THROTTLE_RATES": {},
+    "UNAUTHENTICATED_USER": None,
+    "UNAUTHENTICATED_TOKEN": None,
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
 }
 
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'SECURITY_DEFINITIONS': {
-        'api_key': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization'
-        }
+    "USE_SESSION_AUTH": False,
+    "SECURITY_DEFINITIONS": {
+        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
 }
