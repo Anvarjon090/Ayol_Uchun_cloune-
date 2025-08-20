@@ -11,13 +11,13 @@ from rest_framework_simplejwt.views import (
 )
 
 schema_view = get_schema_view(
-    openapi.Info(
-        title="Ayol_Uchun API",
-        default_version='v1',
-        description="API dokumentatsiyasi",
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
+   openapi.Info(
+      title="Anvarjon Uno API",
+      default_version='v1',
+      description="API documentation",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
 )
 
 from .schema import swagger_urlpatterns
