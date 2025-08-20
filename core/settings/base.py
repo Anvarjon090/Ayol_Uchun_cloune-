@@ -159,9 +159,6 @@ RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 
 from core.jazzmin_conf import JAZZMIN_SETTINGS  # noqa
-<<<<<<< HEAD
-=======
-
 
 # REST_FRAMEWORK settings
 
@@ -186,4 +183,3 @@ SWAGGER_SETTINGS = {
         "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
 }
->>>>>>> f016f62a80ef7d92827baadac98f5bbc042e1b32

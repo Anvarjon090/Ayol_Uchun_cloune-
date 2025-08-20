@@ -1024,7 +1024,7 @@ wheels = [
 ]
 
 [[package]]
-<<<<<<< HEAD
+
 name = "referencing"
 version = "0.36.2"
 source = { registry = "https://pypi.org/simple" }
