@@ -38,7 +38,7 @@ urlpatterns = [
     # ASOSIY VEB-SAYT SAHIFALARI UCHUN URL'LAR
     # Bu qator sizning veb-saytingizning asosiy ilovasiga yo'naltiradi.
     # Sizning asosiy ilovangiz nomi 'apps.website' yoki shunga o'xshash bo'lishi mumkin.
-    # path("", include("apps.website.urls")), # Sizning asosiy veb-sayt URL'laringiz
+    path("", include("apps.common.urls")), # Sizning asosiy veb-sayt URL'laringiz
 
     # AUTHENTIKATSIYA URL'LARI
     # Bu qator sizning auth.user xatoligini to'g'irlaydi
