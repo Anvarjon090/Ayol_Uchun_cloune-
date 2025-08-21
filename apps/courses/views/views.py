@@ -1,18 +1,15 @@
-from rest_framework import viewsets, permissions, filters, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Avg
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, permissions, viewsets
 
-
-from apps.courses.models import Course, Webinar, Category, Module, Lesson, Comment
+from apps.courses.models import Category, Comment, Course, Lesson, Module, Webinar
 from apps.courses.serializers import (
-    CourseSerializer,
-    WebinarSerializer,
     CategorySerializer,
-    ModuleSerializer,
-    LessonSerializer,
     CommentSerializer,
+    CourseSerializer,
+    LessonSerializer,
+    ModuleSerializer,
+    WebinarSerializer,
 )
 
 
@@ -33,10 +30,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all().select_related("category", "author").prefetch_related("modules")
+    queryset = (
+        Course.objects.all()
+        .select_related("category", "author")
+        .prefetch_related("modules")
+    )
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["category", "author", "price"]
     search_fields = ["title", "description"]
     ordering_fields = ["price", "rating", "created_at"]
@@ -56,7 +61,11 @@ class WebinarViewSet(viewsets.ModelViewSet):
     queryset = Webinar.objects.all().select_related("category", "author")
     serializer_class = WebinarSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["category", "author", "datetime"]
     search_fields = ["title", "description"]
     ordering_fields = ["datetime", "price", "rating"]
@@ -87,7 +96,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().select_related("user", "course", "webinar")
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["user", "course", "webinar", "rating"]
     search_fields = ["text"]
     ordering_fields = ["rating", "created_at"]

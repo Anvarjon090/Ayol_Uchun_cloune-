@@ -138,19 +138,28 @@ class Transaction(BaseModel):
         self.order.save(update_fields=["is_paid"])
 
         return self
-    
+
 
 class UserCard(BaseModel):
     user = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE, related_name="user_cards", verbose_name=_("User")
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="user_cards",
+        verbose_name=_("User"),
     )
     card_token = models.CharField(max_length=255, verbose_name=_("Card Token"))
     provider = models.ForeignKey(
         "payments.Providers", on_delete=models.CASCADE, verbose_name=_("Provider")
     )
-    cardholder_name = models.CharField(max_length=255, verbose_name=_("Cardholder Name"), null=True, blank=True)
-    last_four_digits = models.CharField(max_length=4, verbose_name=_("Last Four Digits"), null=True, blank=True)
-    brand = models.CharField(max_length=255, verbose_name=_("Brand"), null=True, blank=True)
+    cardholder_name = models.CharField(
+        max_length=255, verbose_name=_("Cardholder Name"), null=True, blank=True
+    )
+    last_four_digits = models.CharField(
+        max_length=4, verbose_name=_("Last Four Digits"), null=True, blank=True
+    )
+    brand = models.CharField(
+        max_length=255, verbose_name=_("Brand"), null=True, blank=True
+    )
     expire_month = models.CharField(max_length=2, verbose_name=_("Expire Month"))
     expire_year = models.CharField(max_length=4, verbose_name=_("Expire Year"))
     is_confirmed = models.BooleanField(default=False, verbose_name=_("Is confirmed"))

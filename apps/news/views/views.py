@@ -1,26 +1,20 @@
-from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, permissions, viewsets
 
-from apps.news.models import (
-    Post,
-    Event,
-    Survey,
-    Question,
-    QuestionOption,
-    Submission
-)
+from apps.news.models import Event, Post, Question, QuestionOption, Submission, Survey
 from apps.news.serializers import (
-    PostSerializer,
     EventSerializer,
-    SurveySerializer,
-    QuestionSerializer,
+    PostSerializer,
     QuestionOptionSerializer,
-    SubmissionSerializer
+    QuestionSerializer,
+    SubmissionSerializer,
+    SurveySerializer,
 )
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     """Admin bo‘lmasa faqat o‘qishga ruxsat."""
+
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -40,7 +34,11 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend,
+    ]
     search_fields = ["title", "description", "location_name"]
     filterset_fields = ["datetime", "location_name"]
     ordering_fields = ["datetime", "created_at"]
@@ -50,7 +48,11 @@ class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all().prefetch_related("questions")
     serializer_class = SurveySerializer
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    filter_backends = [
+        filters.SearchFilter,
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+    ]
     search_fields = ["title", "description"]
     filterset_fields = ["course"]
     ordering_fields = ["created_at"]
@@ -73,7 +75,9 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
 
 
 class SubmissionViewSet(viewsets.ModelViewSet):
-    queryset = Submission.objects.all().select_related("user", "question", "chosen_option")
+    queryset = Submission.objects.all().select_related(
+        "user", "question", "chosen_option"
+    )
     serializer_class = SubmissionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]

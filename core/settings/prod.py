@@ -1,3 +1,7 @@
-from .base import * # noqa
+from .base import *  # noqa
 
-DEBUG = False
+ALLOWED_HOSTS = [
+    "anvarjon-uno.uz",
+    "www.anvarjon-uno.uz",
+]
+DEBUG = True

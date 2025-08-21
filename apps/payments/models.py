@@ -137,7 +137,7 @@ class Transaction(BaseModel):
         self,
         provider=None,
         transaction_id: str | None = None,
-        card: UserCard | None = None
+        card: UserCard | None = None,
     ):
         if not self.remote_id and transaction_id:
             self.remote_id = str(transaction_id)

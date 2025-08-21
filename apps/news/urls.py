@@ -1,11 +1,12 @@
 from rest_framework.routers import DefaultRouter
+
 from .views import (
-    PostViewSet,
     EventViewSet,
-    SurveyViewSet,
-    QuestionViewSet,
+    PostViewSet,
     QuestionOptionViewSet,
+    QuestionViewSet,
     SubmissionViewSet,
+    SurveyViewSet,
 )
 
 app_name = "news"

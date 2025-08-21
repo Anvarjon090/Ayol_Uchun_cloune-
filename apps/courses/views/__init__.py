@@ -2,23 +2,23 @@
 # from .version_history import VersionHistoryView
 
 from rest_framework import viewsets
+
 from .views import (
     CategoryViewSet,
-    CourseViewSet,
-    WebinarViewSet,
-    ModuleViewSet,
-    LessonViewSet,
     CommentViewSet,
+    CourseViewSet,
+    LessonViewSet,
+    ModuleViewSet,
+    WebinarViewSet,
 )
 
-
 __all__ = [
-    "FrontendTranslationView",
-    "VersionHistoryView",
-    "CourseView",
-    "WebinarView",
     "CategoryView",
-    "ModuleView",
+    "CommentView",
+    "CourseView",
+    "FrontendTranslationView",
     "LessonView",
-    "CommentView"
+    "ModuleView",
+    "VersionHistoryView",
+    "WebinarView",
 ]
