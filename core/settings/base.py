@@ -20,7 +20,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["apps.common", "apps.users", "apps.news", "apps.courses", "apps.payments"]
+LOCAL_APPS = ["apps.common", "apps.users", "apps.news", "apps.courses", "apps.payments", "apps.website"]
 
 EXTERNAL_APPS = [
     "daphne",
