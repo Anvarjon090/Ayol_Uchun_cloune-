@@ -7,7 +7,7 @@ JAZZMIN_SETTINGS = {
     "site_icon": "apple.jpg",
     "welcome_sign": "Welcome to the Ayol Uchun Admin",
     "copyright": "UIC Academy",
-    "search_model": ["auth.User", "auth.Group"],
+    "search_model": ["users.User", "auth.Group"],
     "user_avatar": "avatar",
     ############
     # Top Menu #
