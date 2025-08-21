@@ -29,14 +29,14 @@ JAZZMIN_SETTINGS = {
     "hide_apps": [],
     "hide_models": [],
     "custom_links": {
-        "books": [
-            {
-                "name": "Make Messages",
-                "url": "make_messages",
-                "icon": "fas fa-comments",
-                "permissions": ["books.view_book"],
-            }
-        ]
+        # "books": [
+        #     {
+        #         "name": "Make Messages",
+        #         "url": "make_messages",
+        #         "icon": "fas fa-comments",
+        #         "permissions": ["books.view_book"],
+        #     }
+        # ]
     },
     "icons": {
         "auth": "fas fa-users-cog",
