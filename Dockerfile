@@ -28,3 +28,6 @@ RUN --mount=type=cache,target=/home/appuser/.cache/uv \
 
 # Entrypoint is defined in docker-compose
 ENTRYPOINT []
+
+
+RUN uv sync --locked --no-install-project --no-dev
