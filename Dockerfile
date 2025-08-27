@@ -19,7 +19,7 @@ COPY --chown=appuser:appuser pyproject.toml uv.lock ./
 USER appuser
 
 # Install production dependencies only
-RUN --mount=type=cache,target=/home/appuser/.cache/uv \
+# RUN --mount=type=cache,target=/home/appuser/.cache/uv \
 RUN uv sync --locked --no-install-project --no-dev 
     # uv sync --locked --no-install-project --no-dev
 
