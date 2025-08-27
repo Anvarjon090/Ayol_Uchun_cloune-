@@ -20,7 +20,8 @@ USER appuser
 
 # Install production dependencies only
 RUN --mount=type=cache,target=/home/appuser/.cache/uv \
-    uv sync --locked --no-install-project --no-dev
+RUN uv sync --locked --no-install-project --no-dev 
+    # uv sync --locked --no-install-project --no-dev
 
 # Copy full application
 COPY --chown=appuser:appuser . .
